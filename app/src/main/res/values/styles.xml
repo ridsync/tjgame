@@ -1,0 +1,26 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#22BC9D</item>
+        <item name="colorPrimaryDark">#09A384</item>
+        <item name="colorAccent">#97CE1F</item>
+    </style>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+        <!-- enable window content transitions -->
+        <item name="android:windowContentTransitions">true</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+
+    출처: http://gogorchg.tistory.com/entry/Android-ThemeAppCompat-사용시-statusbar가-UI와-겹칠때 [항상 초심으로]
+
+    출처: http://gogorchg.tistory.com/entry/Android-ThemeAppCompat-사용시-statusbar가-UI와-겹칠때 [항상 초심으로]
+
+    출처: http://gogorchg.tistory.com/entry/Android-ThemeAppCompat-사용시-statusbar가-UI와-겹칠때 [항상 초심으로]
+</resources>
