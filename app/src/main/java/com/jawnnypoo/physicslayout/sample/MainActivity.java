@@ -1,5 +1,8 @@
 package com.jawnnypoo.physicslayout.sample;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jawnnypoo.physicslayout.Physics;
 import com.jawnnypoo.physicslayout.PhysicsFrameLayout;
@@ -23,9 +27,19 @@ import com.squareup.picasso.Picasso;
 
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -53,10 +67,13 @@ public class MainActivity extends AppCompatActivity {
     SoundPool sound = new SoundPool.Builder()
             .setMaxStreams(10)
             .build();
+    public List<AnimalDTO> animals = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initialAnimalDatas();
 
         toggleNavigationBar();
         View decorView = getWindow().getDecorView();
@@ -125,8 +142,10 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     physicsLayout.getPhysics().enableFling();
+                    Toast.makeText(MainActivity.this,"동물 터치",Toast.LENGTH_SHORT).show();
                 } else {
                     physicsLayout.getPhysics().disableFling();
+                    Toast.makeText(MainActivity.this,"동물 소리듣기",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -141,50 +160,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ImageView imageView = new ImageView(MainActivity.this);
-                imageView.setImageResource(R.drawable.ic_logo);
-                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-                        getResources().getDimensionPixelSize(R.dimen.square_size),
-                        getResources().getDimensionPixelSize(R.dimen.square_size));
-                imageView.setLayoutParams(llp);
-                imageView.setId(catIndex);
-                physicsLayout.addView(imageView);
-                Picasso.with(MainActivity.this)
-                        .load("http://lorempixel.com/200/200/cats/" + ((catIndex % 10) + 1))
-                        .placeholder(R.drawable.ic_logo)
-                        .into(imageView);
-                catIndex++;
+                if (animals.size() > 0) {
+                    ImageView imageView = new ImageView(MainActivity.this);
+                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                            getResources().getDimensionPixelSize(R.dimen.square_size),
+                            getResources().getDimensionPixelSize(R.dimen.square_size));
+                    if (catIndex % 3 == 0){
+                        imageView = new CircleImageView(MainActivity.this);
+                        llp = new LinearLayout.LayoutParams(
+                                getResources().getDimensionPixelSize(R.dimen.circle_size),
+                                getResources().getDimensionPixelSize(R.dimen.circle_size));
+                    }
+
+                    imageView.setImageResource(R.drawable.ic_logo);
+
+                    imageView.setLayoutParams(llp);
+                    imageView.setId(catIndex);
+                    physicsLayout.addView(imageView);
+
+                    AnimalDTO animal = animals.remove(0);
+                    loadImageNSound(animal,imageView);
+                    catIndex++;
+                } else {
+                    Toast.makeText(MainActivity.this,"추가할 동물 없음",Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
 
         for (int i=0; i<physicsLayout.getChildCount(); i++) {
                 ImageView imageView = (ImageView) physicsLayout.getChildAt(i);
                 imageView.setId(i);
-                Picasso.with(this)
-                        .load("http://lorempixel.com/200/200/cats/" + (i + 1))
-                        .placeholder(R.drawable.ic_logo)
-                        .into(imageView);
+                AnimalDTO animal = animals.remove(i);
 
-                final int soundId = sound.load(MainActivity.this, R.raw.cat1, 1);
-                imageView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-
-                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            return ! physicsLayout.getPhysics().isFlingEnabled();
-                        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                            if (streamId > 0) {
-                                sound.stop(streamId);
-                                streamId = 0;
-                            }
-                            streamId = sound.play(soundId, 0.8F, 0.8F, 1, 0, 1.0F);
-                            return false;
-                        } else {
-                            return false;
-                        }
-                    }
-                });
+                loadImageNSound(animal,imageView);
 
         }
         catIndex = physicsLayout.getChildCount();
@@ -234,6 +242,38 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void loadImageNSound(AnimalDTO animal, ImageView imageView) {
+
+        Log.d("AnimalDTO-->", animal.name);
+        int resId = getResources().getIdentifier(animal.identifier,"drawable",getPackageName());
+        Picasso.with(this)
+                .load(resId)
+//                        .placeholder(R.drawable.ic_logo)
+                .into(imageView);
+
+        int soundResId = getResources().getIdentifier(animal.audio.replace(".mp3",""),"raw",getPackageName());
+
+        final int soundId = sound.load(MainActivity.this,soundResId, 1);
+        imageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    return ! physicsLayout.getPhysics().isFlingEnabled();
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (streamId > 0) {
+                        sound.stop(streamId);
+                        streamId = 0;
+                    }
+                    streamId = sound.play(soundId, 0.8F, 0.8F, 1, 0, 1.0F);
+                    return false;
+                } else {
+                    return false;
+                }
+            }
+        });
+    }
+
     private void toggleNavigationBar (){
 
         View decorView = getWindow().getDecorView();
@@ -253,5 +293,59 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    public void initialAnimalDatas(){
+
+        doParsingJson();
+
+    }
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getAssets().open("animals.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public void doParsingJson(){
+
+        try {
+            JSONObject obj = new JSONObject(loadJSONFromAsset());
+            JSONArray m_jArry = obj.getJSONArray("items");
+            AnimalDTO m_li;
+
+            for (int i = 0; i < m_jArry.length(); i++) {
+                JSONObject jo_inside = m_jArry.getJSONObject(i);
+                Log.d("Details-->", jo_inside.getString("name"));
+                String name = jo_inside.getString("name");
+                String color = jo_inside.getString("color");
+                String identifier = jo_inside.getString("identifier");
+                JSONArray audio = jo_inside.getJSONArray("audio");
+
+                //Add your values in your `ArrayList` as below:
+                m_li = new AnimalDTO();
+                m_li.setName(name);
+                m_li.setColor(color);
+                m_li.setIdentifier(identifier);
+                m_li.setAudio(audio.get(0).toString());
+                animals.add(m_li);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
 
 }

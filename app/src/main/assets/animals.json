@@ -1,0 +1,153 @@
+
+{
+    "items": [
+    {
+        "audio": [
+            "whinny1.mp3",
+            "whinny2.mp3",
+            "whinny3.mp3",
+            "whinny4.mp3"
+        ],
+        "color": "#deb887",
+        "identifier": "horse",
+        "name": "horse"
+    },
+    {
+        "audio": [
+            "catmeow_01.mp3",
+            "catmeow_02.mp3",
+            "catmeow_03.mp3",
+            "catmeow.mp3"
+        ],
+        "color": "#fff8dc",
+        "identifier": "cat",
+        "name": "cat"
+    },
+    {
+        "audio": [
+            "frogcroak_2.mp3",
+            "frogcroak_3.mp3"
+        ],
+        "color": "#afc547",
+        "identifier": "frog",
+        "name": "frog"
+    },
+    {
+        "audio": [
+            "cock.mp3"
+        ],
+        "color": "#f0f8ff",
+        "identifier": "cock",
+        "name": "cock"
+    },
+    {
+        "audio": [
+            "cowmooingsfx.mp3"
+        ],
+        "color": "#cfcfc4",
+        "identifier": "cow",
+        "name": "cow"
+    },
+    {
+        "audio": [
+            "dog.mp3"
+        ],
+        "color": "#deb887",
+        "identifier": "dog",
+        "name": "dog"
+    },
+    {
+        "audio": [
+            "birdduckjba01_45_2.mp3"
+        ],
+        "color": "#fff8dc",
+        "identifier": "duck",
+        "name": "duck"
+    },
+    {
+        "audio": [
+            "mouse.mp3"
+        ],
+        "color": "#f0f8ff",
+        "identifier": "mouse",
+        "name": "mouse"
+    },
+    {
+        "audio": [
+            "donkey_braying_sound01_1.mp3",
+            "donkey_braying_sound01_2.mp3",
+            "donkey_braying_sound01_3.mp3",
+            "donkey_braying_sound01_4.mp3"
+        ],
+        "color": "#e5e4e2",
+        "identifier": "donkey",
+        "name": "donkey"
+    },
+    {
+        "audio": [
+            "item_0.mp3",
+            "item_1.mp3",
+            "item_2_1.mp3",
+            "item_2_2.mp3",
+            "item_3_1.mp3",
+            "item_3_2.mp3",
+            "item_3_3.mp3",
+            "item_3_4.mp3",
+            "item_4.mp3",
+            "item_5.mp3",
+            "item_6.mp3",
+            "item_7.mp3",
+            "item_8.mp3",
+            "item_9.mp3"
+        ],
+        "color": "#fff8dc",
+        "identifier": "pig",
+        "name": "pig"
+    },
+    {
+        "audio": [
+            "sheep.mp3"
+        ],
+        "color": "#e5e4e2",
+        "identifier": "sheep",
+        "name": "sheep"
+    },
+    {
+        "audio": [
+            "fox1.mp3",
+            "fox2.mp3"
+        ],
+        "color": "#ffb347",
+        "identifier": "fox",
+        "name": "fox"
+    },
+    {
+        "audio": [
+            "rabbit_1.mp3",
+            "rabbit_2.mp3",
+            "rabbit_3.mp3"
+        ],
+        "color": "#e5e4e2",
+        "identifier": "rabbit",
+        "name": "rabbit"
+    },
+    {
+        "audio": [
+            "bee_1.mp3",
+            "bee_2.mp3",
+            "bee_3.mp3"
+        ],
+        "color": "#fff8dc",
+        "identifier": "bee",
+        "name": "bee"
+    },
+    {
+        "audio": [
+            "bubbles002.mp3"
+        ],
+        "color": "#f0f8ff",
+        "identifier": "fish",
+        "name": "fish"
+    }
+    ]
+}
