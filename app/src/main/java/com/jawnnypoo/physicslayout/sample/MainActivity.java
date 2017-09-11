@@ -240,6 +240,16 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//        PMWakeLock.acquireCpuWakeLock(this);
+    }
+
+    @Override
+    protected void onStop() {
+
+//        PMWakeLock.releaseCpuLock(this);
+        super.onStop();
     }
 
     private void loadImageNSound(AnimalDTO animal, ImageView imageView) {
@@ -265,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
                         sound.stop(streamId);
                         streamId = 0;
                     }
-                    streamId = sound.play(soundId, 0.8F, 0.8F, 1, 0, 1.0F);
+                    streamId = sound.play(soundId, 1.0F, 1.0F, 1, 0, 1.0F);
                     return false;
                 } else {
                     return false;
