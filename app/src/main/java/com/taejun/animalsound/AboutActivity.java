@@ -1,4 +1,4 @@
-package com.jawnnypoo.physicslayout.sample;
+package com.taejun.animalsound;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.commit451.gitbal.Gimbal;
 import com.jawnnypoo.physicslayout.Physics;
 import com.jawnnypoo.physicslayout.PhysicsConfig;
-import com.jawnnypoo.physicslayout.sample.github.Contributor;
-import com.jawnnypoo.physicslayout.sample.github.GithubClient;
+import com.taejun.animalsound.github.Contributor;
+import com.taejun.animalsound.github.GithubClient;
 import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
 

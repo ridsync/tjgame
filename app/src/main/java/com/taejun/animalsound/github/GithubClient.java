@@ -1,7 +1,7 @@
-package com.jawnnypoo.physicslayout.sample.github;
+package com.taejun.animalsound.github;
 
 
-import com.jawnnypoo.physicslayout.sample.BuildConfig;
+import com.taejun.animalsound.BuildConfig;
 
 import java.util.List;
 

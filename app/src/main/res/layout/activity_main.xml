@@ -37,13 +37,13 @@
             app:gravityY="0.0"
             app:physics="true">
 
-            <com.jawnnypoo.physicslayout.sample.TouchImageView
+            <ImageView
                 android:layout_width="@dimen/square_size"
                 android:layout_height="@dimen/square_size"
                 android:layout_gravity="left"
                 android:src="@drawable/ic_logo"/>
 
-            <com.jawnnypoo.physicslayout.sample.TouchImageView
+            <ImageView
                 android:layout_width="@dimen/square_size"
                 android:layout_height="@dimen/square_size"
                 android:layout_gravity="right"
@@ -58,13 +58,13 @@
                 app:layout_bodyType="dynamic"
                 app:layout_shape="circle"/>
 
-            <com.jawnnypoo.physicslayout.sample.TouchImageView
+            <ImageView
                 android:layout_width="@dimen/square_size"
                 android:layout_height="@dimen/square_size"
                 android:layout_gravity="bottom|left"
                 android:src="@drawable/ic_logo"/>
 
-            <com.jawnnypoo.physicslayout.sample.TouchImageView
+            <ImageView
                 android:layout_width="@dimen/square_size"
                 android:layout_height="@dimen/square_size"
                 android:layout_gravity="bottom|right"
@@ -82,20 +82,20 @@
             android:visibility="visible">
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/fling_switch"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Fling"
+                android:textSize="10sp"/>
+
+            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/physics_switch"
                 android:layout_width="85dp"
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:textAlignment="gravity"
                 android:text="Physics"
-                android:textSize="10sp"/>
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/fling_switch"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="Fling"
                 android:textSize="10sp"/>
         </LinearLayout>
 

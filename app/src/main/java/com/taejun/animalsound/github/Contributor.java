@@ -1,4 +1,4 @@
-package com.jawnnypoo.physicslayout.sample.github;
+package com.taejun.animalsound.github;
 
 import com.google.gson.annotations.SerializedName;
 

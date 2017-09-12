@@ -1,8 +1,5 @@
-package com.jawnnypoo.physicslayout.sample;
+package com.taejun.animalsound;
 
-import android.content.Context;
-import android.content.res.AssetManager;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -11,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,7 +31,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -64,9 +61,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean isNavShow = true;
     int catIndex;
     public static int streamId;
-    SoundPool sound = new SoundPool.Builder()
-            .setMaxStreams(10)
-            .build();
+    final SoundPool sound = new SoundPool(10,         // 최대 음악파일의 개수
+            AudioManager.STREAM_MUSIC,0); // 스트림 타입
     public List<AnimalDTO> animals = new ArrayList<>();
 
     @Override
@@ -159,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         addViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                catIndex++;
                 if (animals.size() > 0) {
                     ImageView imageView = new ImageView(MainActivity.this);
                     LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
@@ -167,11 +163,12 @@ public class MainActivity extends AppCompatActivity {
                             getResources().getDimensionPixelSize(R.dimen.square_size));
                     if (catIndex % 3 == 0){
                         imageView = new CircleImageView(MainActivity.this);
+//                        imageView = (CircleImageView) getLayoutInflater().inflate(R.layout.circle_imageview,physicsLayout,false);
                         llp = new LinearLayout.LayoutParams(
                                 getResources().getDimensionPixelSize(R.dimen.circle_size),
                                 getResources().getDimensionPixelSize(R.dimen.circle_size));
                     }
-
+                    llp.gravity = Gravity.CENTER;
                     imageView.setImageResource(R.drawable.ic_logo);
 
                     imageView.setLayoutParams(llp);
@@ -180,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
 
                     AnimalDTO animal = animals.remove(0);
                     loadImageNSound(animal,imageView);
-                    catIndex++;
                 } else {
                     Toast.makeText(MainActivity.this,"추가할 동물 없음",Toast.LENGTH_SHORT).show();
                 }
@@ -232,10 +228,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (isNavShow) {
-                        toggleNavigationBar();
-                    }
+                if ( isNavShow && event.getAction() == MotionEvent.ACTION_UP) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (isNavShow) {
+                                toggleNavigationBar();
+                            }
+                        }
+                    },500);
                 }
                 return false;
             }
@@ -308,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
 
         doParsingJson();
 
+        Collections.shuffle(animals);
     }
 
     public String loadJSONFromAsset() {

@@ -5,8 +5,8 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "com.jawnnypoo.physicslayout.sample"
-        minSdkVersion 21
+        applicationId "com.taejun.animalsound"
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 101
         versionName "1.0.1"

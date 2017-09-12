@@ -1,4 +1,4 @@
-package com.jawnnypoo.physicslayout.sample;
+package com.taejun.animalsound;
 
 import android.app.Activity;
 import android.os.Bundle;
