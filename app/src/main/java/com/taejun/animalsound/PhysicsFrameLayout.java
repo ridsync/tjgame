@@ -1,4 +1,4 @@
-package com.jawnnypoo.physicslayout;
+package com.taejun.animalsound;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -7,9 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import com.jawnnypoo.physicslayout.Physics;
+import com.jawnnypoo.physicslayout.PhysicsConfig;
+import com.jawnnypoo.physicslayout.PhysicsLayoutParams;
+import com.jawnnypoo.physicslayout.PhysicsLayoutParamsProcessor;
 
 /**
  * Typical FrameLayout with some physics added on. Call {@link #getPhysics()} to get the
@@ -68,11 +72,60 @@ public class PhysicsFrameLayout extends FrameLayout {
         return physics.onInterceptTouchEvent(ev);
     }
 
+    boolean isTap = false;
+    float downX = 0;
+    float downY = 0;
+
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
+
+        final int action = MotionEventCompat.getActionMasked(event);
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN: {
+                downX = event.getX();
+                downY = event.getY();
+                isTap = true;
+                break;
+            }
+            case MotionEvent.ACTION_MOVE: {
+                final float x = event.getX();
+                final float y = event.getY();
+                if (Math.abs(downX - x) >= 10 || Math.abs(downY - y) >= 10) {
+                    isTap = false;
+                }
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                if (isTap) {
+                    final float x = event.getX();
+                    final float y = event.getY();
+                    View view = findTopChildUnder((int) x, (int) y);
+                    if (view!=null) {
+                        AnimalImageView imageView = (AnimalImageView)view;
+                        imageView.playSound();
+                    }
+                    isTap = false;
+                }
+                break;
+            }
+
+        }
+
         return physics.onTouchEvent(event);
     }
 
+    public View findTopChildUnder(int x, int y) {
+        final int childCount = getChildCount();
+        for (int i = childCount - 1; i >= 0; i--) {
+            final View child = getChildAt(i);
+            if (x >= child.getX() && x < child.getX() + child.getWidth() &&
+                    y >= child.getY() && y < child.getY() + child.getHeight()) {
+                return child;
+            }
+        }
+        return null;
+    }
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new LayoutParams(getContext(), attrs);

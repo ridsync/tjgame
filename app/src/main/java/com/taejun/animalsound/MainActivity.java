@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jawnnypoo.physicslayout.Physics;
-import com.jawnnypoo.physicslayout.PhysicsFrameLayout;
+import com.taejun.animalsound.PhysicsFrameLayout;
 import com.squareup.picasso.Picasso;
 
 import org.jbox2d.dynamics.Body;
@@ -60,14 +60,16 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isNavShow = true;
     int catIndex;
-    public static int streamId;
-    final SoundPool sound = new SoundPool(10,         // 최대 음악파일의 개수
-            AudioManager.STREAM_MUSIC,0); // 스트림 타입
+//    public static int streamId;
+//    final SoundPool sound = new SoundPool(10,         // 최대 음악파일의 개수
+//            AudioManager.STREAM_MUSIC,0); // 스트림 타입
     public List<AnimalDTO> animals = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AnimalImageView.initSoundPool();
 
         initialAnimalDatas();
 
@@ -118,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
+
         physicsSwitch.setChecked(physicsLayout.getPhysics().isPhysicsEnabled());
         physicsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -133,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        physicsLayout.getPhysics().enableFling();
+        flingSwitch.setChecked(physicsLayout.getPhysics().isFlingEnabled());
         flingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -157,12 +162,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 catIndex++;
                 if (animals.size() > 0) {
-                    ImageView imageView = new ImageView(MainActivity.this);
+                    AnimalImageView imageView = new AnimalImageView(MainActivity.this);
                     LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
                             getResources().getDimensionPixelSize(R.dimen.square_size),
                             getResources().getDimensionPixelSize(R.dimen.square_size));
                     if (catIndex % 3 == 0){
-                        imageView = new CircleImageView(MainActivity.this);
+                        imageView = new AnimalImageView(MainActivity.this);
 //                        imageView = (CircleImageView) getLayoutInflater().inflate(R.layout.circle_imageview,physicsLayout,false);
                         llp = new LinearLayout.LayoutParams(
                                 getResources().getDimensionPixelSize(R.dimen.circle_size),
@@ -184,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         for (int i=0; i<physicsLayout.getChildCount(); i++) {
-                ImageView imageView = (ImageView) physicsLayout.getChildAt(i);
+                AnimalImageView imageView = (AnimalImageView) physicsLayout.getChildAt(i);
                 imageView.setId(i);
                 AnimalDTO animal = animals.remove(i);
 
@@ -253,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    private void loadImageNSound(AnimalDTO animal, ImageView imageView) {
+    private void loadImageNSound(AnimalDTO animal, AnimalImageView imageView) {
 
         Log.d("AnimalDTO-->", animal.name);
         int resId = getResources().getIdentifier(animal.identifier,"drawable",getPackageName());
@@ -264,25 +269,26 @@ public class MainActivity extends AppCompatActivity {
 
         int soundResId = getResources().getIdentifier(animal.audio.replace(".mp3",""),"raw",getPackageName());
 
-        final int soundId = sound.load(MainActivity.this,soundResId, 1);
-        imageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    return ! physicsLayout.getPhysics().isFlingEnabled();
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (streamId > 0) {
-                        sound.stop(streamId);
-                        streamId = 0;
-                    }
-                    streamId = sound.play(soundId, 1.0F, 1.0F, 1, 0, 1.0F);
-                    return false;
-                } else {
-                    return false;
-                }
-            }
-        });
+        final int soundId = AnimalImageView.sound.load(MainActivity.this,soundResId, 1);
+        imageView.setSountId(soundId);
+//        imageView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//                    return ! physicsLayout.getPhysics().isFlingEnabled();
+//                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+//                    if (streamId > 0) {
+//                        sound.stop(streamId);
+//                        streamId = 0;
+//                    }
+//                    streamId = sound.play(soundId, 1.0F, 1.0F, 1, 0, 1.0F);
+//                    return false;
+//                } else {
+//                    return false;
+//                }
+//            }
+//        });
     }
 
     private void toggleNavigationBar (){

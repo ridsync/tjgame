@@ -27,7 +27,7 @@
         </android.support.design.widget.AppBarLayout>
 
 
-        <com.jawnnypoo.physicslayout.PhysicsFrameLayout
+        <com.taejun.animalsound.PhysicsFrameLayout
             android:id="@+id/physics_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -37,19 +37,19 @@
             app:gravityY="0.0"
             app:physics="true">
 
-            <ImageView
+            <com.taejun.animalsound.AnimalImageView
                 android:layout_width="@dimen/square_size"
                 android:layout_height="@dimen/square_size"
                 android:layout_gravity="left"
                 android:src="@drawable/ic_logo"/>
 
-            <ImageView
+            <com.taejun.animalsound.AnimalImageView
                 android:layout_width="@dimen/square_size"
                 android:layout_height="@dimen/square_size"
                 android:layout_gravity="right"
                 android:src="@drawable/ic_logo"/>
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.taejun.animalsound.AnimalImageView
                 android:id="@+id/circle"
                 android:layout_width="@dimen/circle_size"
                 android:layout_height="@dimen/circle_size"
@@ -58,20 +58,20 @@
                 app:layout_bodyType="dynamic"
                 app:layout_shape="circle"/>
 
-            <ImageView
+            <com.taejun.animalsound.AnimalImageView
                 android:layout_width="@dimen/square_size"
                 android:layout_height="@dimen/square_size"
                 android:layout_gravity="bottom|left"
                 android:src="@drawable/ic_logo"/>
 
-            <ImageView
+            <com.taejun.animalsound.AnimalImageView
                 android:layout_width="@dimen/square_size"
                 android:layout_height="@dimen/square_size"
                 android:layout_gravity="bottom|right"
                 android:src="@drawable/ic_logo"/>
 
 
-        </com.jawnnypoo.physicslayout.PhysicsFrameLayout>
+        </com.taejun.animalsound.PhysicsFrameLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
