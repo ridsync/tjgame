@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                                         toggleNavigationBar();
                                     }
                                 }
-                            }, 2000);
+                            }, 500);
                         } else {
                             isNavShow = false;
                             // TODO: The system bars are NOT visible. Make any desired
@@ -224,23 +224,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        physicsLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if ( isNavShow && event.getAction() == MotionEvent.ACTION_UP) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isNavShow) {
-                                toggleNavigationBar();
-                            }
-                        }
-                    },500);
-                }
-                return false;
-            }
-        });
+//        physicsLayout.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                if ( isNavShow && event.getAction() == MotionEvent.ACTION_DOWN) {
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if (isNavShow) {
+//                                toggleNavigationBar();
+//                            }
+//                        }
+//                    },100);
+//                }
+//                return false;
+//            }
+//        });
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //        PMWakeLock.acquireCpuWakeLock(this);
