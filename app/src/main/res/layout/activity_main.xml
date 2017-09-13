@@ -74,12 +74,14 @@
         </com.taejun.animalsound.PhysicsFrameLayout>
 
         <LinearLayout
+            android:id="@+id/setting_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
+            android:padding="16dp"
             android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:visibility="visible">
+            android:layout_centerInParent="true"
+            android:background="#bbffffff"
+            android:gravity="center">
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/fling_switch"
@@ -87,25 +89,41 @@
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:text="Fling"
-                android:textSize="10sp"/>
+                android:textSize="10sp"
+                android:textColor="#000000"/>
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/physics_switch"
                 android:layout_width="85dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="6dp"
                 android:gravity="center"
                 android:textAlignment="gravity"
                 android:text="Physics"
-                android:textSize="10sp"/>
+                android:textSize="10sp"
+                android:textColor="#000000"/>
+
+            <Button
+                android:id="@+id/clear_all_button"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="6dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="#aadd3333"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="7sp"
+                android:text="초기화"/>
         </LinearLayout>
 
         <Button
             android:id="@+id/add_view_button"
             android:layout_width="70dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_height="25dp"
-            android:background="#aa44aa55"
+            android:background="#9944aa55"
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:textSize="7sp"
@@ -117,11 +135,22 @@
             android:layout_height="25dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:background="#aadd3333"
+            android:background="#99dd3333"
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:textSize="7sp"
             android:text="흔들기"/>
+
+        <ImageButton
+            android:id="@+id/setting_button"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:background="#00000000"
+            android:src="@drawable/settings"
+            android:scaleType="fitCenter"/>
 
         <TextView
             android:id="@+id/collision"

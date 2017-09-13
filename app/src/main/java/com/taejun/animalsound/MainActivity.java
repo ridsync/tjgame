@@ -1,7 +1,5 @@
 package com.taejun.animalsound;
 
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -12,14 +10,14 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jawnnypoo.physicslayout.Physics;
-import com.taejun.animalsound.PhysicsFrameLayout;
 import com.squareup.picasso.Picasso;
 
 import org.jbox2d.dynamics.Body;
@@ -36,7 +34,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     @Bind(R.id.physics_layout)
     PhysicsFrameLayout physicsLayout;
+    @Bind(R.id.setting_layout)
+    LinearLayout settingLayout;
+    @Bind(R.id.setting_button)
+    ImageButton settingButton;
+    @Bind(R.id.clear_all_button)
+    Button clearAllButton;
     @Bind(R.id.physics_switch)
     SwitchCompat physicsSwitch;
     @Bind(R.id.fling_switch)
@@ -59,12 +62,14 @@ public class MainActivity extends AppCompatActivity {
     TextView collisionView;
 
     public boolean isNavShow = true;
-    int catIndex;
+    int animalIndex;
+    long then = 0;
 //    public static int streamId;
 //    final SoundPool sound = new SoundPool(10,         // 최대 음악파일의 개수
 //            AudioManager.STREAM_MUSIC,0); // 스트림 타입
     public List<AnimalDTO> animals = new ArrayList<>();
-
+    private Handler handler = new Handler();
+    private Runnable setRun = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
+        settingLayout.setVisibility(View.GONE);
 
         physicsSwitch.setChecked(physicsLayout.getPhysics().isPhysicsEnabled());
         physicsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -134,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                                 .animate().translationY(0).translationX(0).rotation(0);
                     }
                 }
+                settingLayout.setVisibility(View.GONE);
             }
         });
         physicsLayout.getPhysics().enableFling();
@@ -148,8 +155,48 @@ public class MainActivity extends AppCompatActivity {
                     physicsLayout.getPhysics().disableFling();
                     Toast.makeText(MainActivity.this,"동물 소리듣기",Toast.LENGTH_SHORT).show();
                 }
+                settingLayout.setVisibility(View.GONE);
             }
         });
+
+        clearAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initialAnimalDatas();
+                physicsLayout.removeAllViews();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        settingLayout.setVisibility(View.GONE);
+                    }
+                },100);
+
+            }
+        });
+        setRun = new Runnable() {
+            @Override
+            public void run() {
+                settingLayout.setVisibility(View.VISIBLE);
+            }
+        };
+        settingButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    then = System.currentTimeMillis();
+                    handler.postDelayed(setRun,3000);
+                }
+                else if(event.getAction() == MotionEvent.ACTION_UP){
+                    if((System.currentTimeMillis() - then) < 3000){
+                        handler.removeCallbacks(setRun);
+                        settingLayout.setVisibility(View.GONE);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
         impulseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,13 +207,13 @@ public class MainActivity extends AppCompatActivity {
         addViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                catIndex++;
+                animalIndex++;
                 if (animals.size() > 0) {
                     AnimalImageView imageView = new AnimalImageView(MainActivity.this);
                     LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
                             getResources().getDimensionPixelSize(R.dimen.square_size),
                             getResources().getDimensionPixelSize(R.dimen.square_size));
-                    if (catIndex % 3 == 0){
+                    if (animalIndex % 3 == 0){
                         imageView = new AnimalImageView(MainActivity.this);
 //                        imageView = (CircleImageView) getLayoutInflater().inflate(R.layout.circle_imageview,physicsLayout,false);
                         llp = new LinearLayout.LayoutParams(
@@ -177,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     imageView.setImageResource(R.drawable.ic_logo);
 
                     imageView.setLayoutParams(llp);
-                    imageView.setId(catIndex);
+                    imageView.setId(animalIndex);
                     physicsLayout.addView(imageView);
 
                     AnimalDTO animal = animals.remove(0);
@@ -196,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                 loadImageNSound(animal,imageView);
 
         }
-        catIndex = physicsLayout.getChildCount();
+        animalIndex = physicsLayout.getChildCount();
 
         physicsLayout.getPhysics().setOnCollisionListener(new Physics.OnCollisionListener() {
             @Override
@@ -258,6 +305,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        AnimalImageView.sound.release();
+        AnimalImageView.sound = null;
+        super.onDestroy();
+    }
+
     private void loadImageNSound(AnimalDTO animal, AnimalImageView imageView) {
 
         Log.d("AnimalDTO-->", animal.name);
@@ -312,9 +366,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initialAnimalDatas(){
-
+        animalIndex = 0;
+        animals.clear();
         doParsingJson();
-
         Collections.shuffle(animals);
     }
 
