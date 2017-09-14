@@ -1,0 +1,162 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/game_bg"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+        <com.taejun.animalsound.PhysicsFrameLayout
+            android:id="@+id/physics_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bounds="true"
+            app:boundsSize="50dp"
+            app:gravityX="0.0"
+            app:gravityY="0.0"
+            app:physics="true">
+
+            <com.taejun.animalsound.AnimalImageView
+                android:layout_width="@dimen/square_size"
+                android:layout_height="@dimen/square_size"
+                android:layout_gravity="left"
+                android:src="@drawable/ic_logo"/>
+
+            <com.taejun.animalsound.AnimalImageView
+                android:layout_width="@dimen/square_size"
+                android:layout_height="@dimen/square_size"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_logo"/>
+
+            <com.taejun.animalsound.AnimalImageView
+                android:id="@+id/circle"
+                android:layout_width="@dimen/circle_size"
+                android:layout_height="@dimen/circle_size"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_logo"
+                app:layout_bodyType="dynamic"
+                app:layout_shape="circle"/>
+
+            <com.taejun.animalsound.AnimalImageView
+                android:layout_width="@dimen/square_size"
+                android:layout_height="@dimen/square_size"
+                android:layout_gravity="bottom|left"
+                android:src="@drawable/ic_logo"/>
+
+            <com.taejun.animalsound.AnimalImageView
+                android:layout_width="@dimen/square_size"
+                android:layout_height="@dimen/square_size"
+                android:layout_gravity="bottom|right"
+                android:src="@drawable/ic_logo"/>
+
+
+        </com.taejun.animalsound.PhysicsFrameLayout>
+
+        <LinearLayout
+            android:id="@+id/setting_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:padding="16dp"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            android:background="#bbffffff"
+            android:gravity="center">
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/fling_switch"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="Fling"
+                android:textSize="10sp"
+                android:textColor="#000000"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/physics_switch"
+                android:layout_width="85dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center"
+                android:textAlignment="gravity"
+                android:text="Physics"
+                android:textSize="10sp"
+                android:textColor="#000000"/>
+
+            <Button
+                android:id="@+id/clear_all_button"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="#aadd3333"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:text="초기화"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/add_view_button"
+            android:layout_width="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="35dp"
+            android:background="#9944aa55"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textSize="9sp"
+            android:text="동물 추가"/>
+
+        <Button
+            android:id="@+id/impulse_button"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="#99dd3333"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textSize="9sp"
+            android:text="흔들기"/>
+
+        <ImageButton
+            android:id="@+id/setting_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:background="#00000000"
+            android:src="@drawable/settings"
+            android:scaleType="fitCenter"/>
+
+        <TextView
+            android:id="@+id/collision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        android:visibility="gone"/>
+    </RelativeLayout>
+
+</merge>
